@@ -5,11 +5,13 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import LoginPage from "./Pages/login.jsx";
 import RegisterPage from "./pages/register.jsx";
+import ErrorPage from "./pages/404.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <div>Hello Argumelar</div>,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
