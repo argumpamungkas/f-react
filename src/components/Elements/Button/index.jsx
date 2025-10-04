@@ -2,11 +2,17 @@
 
 const Button = (props) => {
   // default value
-  const { children = "...", classname = "bg-black" } = props;
+  const {
+    children = "...",
+    classname = "bg-black",
+    onClick = () => {}, // dibuat kosong untuk menangani type button submit
+    type = "button",
+  } = props;
   return (
     <button
-      class={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}
-      type="submit"
+      className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}
+      type={type}
+      onClick={() => onClick()}
     >
       {children}
     </button>
