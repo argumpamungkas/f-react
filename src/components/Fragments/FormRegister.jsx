@@ -1,6 +1,5 @@
 import InputForm from "../Elements/Inputs/InputsForm";
 import Button from "../Elements/Button";
-import { Link } from "react-router-dom";
 
 const FormRegister = () => {
   return (
@@ -30,16 +29,6 @@ const FormRegister = () => {
         placeholder="****"
       />
       <Button classname="bg-blue-700 w-full">Register</Button>
-      <div className="mt-2 text-center">
-        <small>
-          Already an account ?{" "}
-          <Link to="/login">
-            <bold className="font-bold text-blue-700 cursor-pointer">
-              Login
-            </bold>
-          </Link>
-        </small>
-      </div>
     </form>
   );
 };
