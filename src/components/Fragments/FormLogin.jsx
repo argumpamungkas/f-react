@@ -1,5 +1,6 @@
 import InputForm from "../Elements/Inputs/InputsForm";
 import Button from "../Elements/Button";
+import { useEffect, useRef } from "react";
 
 const FormLogin = () => {
   const handleLogin = (event) => {
@@ -22,6 +23,13 @@ const FormLogin = () => {
     console.log("Click LOGIN");
   };
 
+  const usernameRef = useRef(null);
+
+  // akan dijalankan dan auto focus saat masuk pagenya
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
+
   return (
     // Saat submit
     <form onSubmit={handleLogin}>
@@ -30,6 +38,7 @@ const FormLogin = () => {
         label="Username"
         type="text"
         placeholder="frank.lampard"
+        ref={usernameRef}
       />
       <InputForm
         name="password"

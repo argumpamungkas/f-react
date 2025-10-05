@@ -1,6 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import CardProduct from "../components/Fragments/CardProduct";
 import Button from "../components/Elements/Button";
+import Counter from "../components/Fragments/Counter";
 
 const products = [
   {
@@ -32,12 +33,29 @@ const username = localStorage.getItem("username");
 
 const ProdcutsPage = () => {
   // menggunakan hooks untuk setState
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  //hooks useEffect unutk memanipulasi/seperti componentDidUpdate
+  useEffect(() => {
+    console.log("Use Effect");
+    // ambil ke storage, jika ada maka parse, jika tidak ada maka array kosong
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []); // harus nambah dependecies meskipun kosong / []
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id);
+        return acc + product.price * item.qty;
+      }, 0);
+      setTotalPrice(sum);
+
+      // dibuat menjadi json string
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]); // dependencies diisi dengan nilai atau data yang akan dipantau
+  // jadi jika cart na berubah maka kita akan melakukan sesuatu
 
   const handleLogout = () => {
     //Remove local storage
@@ -49,6 +67,7 @@ const ProdcutsPage = () => {
   };
 
   const handleAddToCart = (id) => {
+    console.log("Add to Cart");
     if (cart.find((item) => item.id === id)) {
       setCart(
         cart.map((item) =>
@@ -65,6 +84,28 @@ const ProdcutsPage = () => {
       ]);
     }
   };
+
+  // UseRef
+  // const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+
+  // secara background dia berjalan, tapi secara view/ui dia harus dirender ulang agar ui terupdate sesuai action yang dilakukan
+  // const handleAddToCartRef = (id) => {
+  //   cartRef.current = [...cartRef.current, { id: id, qty: 1 }];
+  //   localStorage.setItem("cart", JSON.stringify(cartRef.current));
+  // };
+
+  // useReff untuk memanipulasi DOM
+  const totalPriceRef = useRef(null);
+
+  console.log(totalPriceRef);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = "table-row";
+    } else {
+      totalPriceRef.current.style.display = "none";
+    }
+  }, [cart]);
 
   return (
     <Fragment>
@@ -86,6 +127,7 @@ const ProdcutsPage = () => {
                 price={product.price}
                 id={product.id}
                 handleAddToCart={handleAddToCart}
+                // handleAddToCart={handleAddToCartRef}
               />
             </CardProduct>
           ))}
@@ -126,11 +168,25 @@ const ProdcutsPage = () => {
                   </tr>
                 );
               })}
+              <tr ref={totalPriceRef}>
+                <td colSpan={3}>Total Price</td>
+                <td>
+                  <b>
+                    Rp
+                    {totalPrice.toLocaleString("id-ID", {
+                      styles: "currency",
+                      currency: "IDR",
+                    })}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
-      {/* <Counter></Counter> */}
+      {/* <div className="mt-5 flex justify-center">
+        <Counter></Counter>
+      </div> */}
     </Fragment>
   );
 };
