@@ -27,8 +27,12 @@ const Body = (props) => {
   return (
     <div className="px-8 pb-4 h-full">
       <a href="$">
-        <h5 className="text-xl font-bold text-white tracking-tight">{name}</h5>
-        <p className="text-white tracking-tight text-sm">{children}</p>
+        <h5 className="text-xl font-bold text-white tracking-tight line-clamp-2">
+          {name}
+        </h5>
+        <p className="text-white tracking-tight text-sm line-clamp-3">
+          {children}
+        </p>
       </a>
     </div>
   );
@@ -39,8 +43,8 @@ const Footer = (props) => {
   return (
     <div className="flex justify-between items-center text-white px-8 pb-4">
       <span className="text-lg font-bold">
-        Rp{" "}
-        {price.toLocaleString("id-ID", { styles: "currency", currency: "IDR" })}
+        ${" "}
+        {price.toLocaleString("id-ID", { styles: "currency", currency: "usd" })}
       </span>
       <Button classname="bg-blue-700" onClick={() => handleAddToCart(id)}>
         Add to Cart
