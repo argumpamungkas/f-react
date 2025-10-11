@@ -3,6 +3,7 @@ import CardProduct from "../components/Fragments/CardProduct";
 import Button from "../components/Elements/Button";
 import Counter from "../components/Fragments/Counter";
 import { getProducts } from "../services/product.service";
+import { getUsername } from "../services/auth.service";
 
 // const products = [
 //   {
@@ -30,13 +31,22 @@ import { getProducts } from "../services/product.service";
 //   },
 // ];
 
-const username = localStorage.getItem("username");
-
 const ProdcutsPage = () => {
   // menggunakan hooks untuk setState
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
+  const [username, setUsername] = useState("");
+
+  // getUername
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUsername(getUsername(token));
+    } else {
+      window.location.href = "/login";
+    }
+  }, []);
 
   //hooks useEffect unutk memanipulasi/seperti componentDidUpdate
   useEffect(() => {
@@ -48,7 +58,7 @@ const ProdcutsPage = () => {
   //fetch product all
   useEffect(() => {
     getProducts((data) => {
-      console.log(data);
+      // console.log(data);
       setProducts(data);
     });
   }, []);
@@ -69,8 +79,9 @@ const ProdcutsPage = () => {
 
   const handleLogout = () => {
     //Remove local storage
-    localStorage.removeItem("username");
-    localStorage.removeItem("pwd");
+    // localStorage.removeItem("username");
+    // localStorage.removeItem("pwd");
+    localStorage.removeItem("token");
 
     // back to login
     window.location.href = "/login";
