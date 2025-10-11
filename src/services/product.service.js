@@ -14,6 +14,19 @@ export const getProducts = (calllback) => {
     })
     .finally(function () {
       // always executed
-      console.log("get product done");
+      // console.log("get product done");
+    });
+};
+
+export const getDetailProduct = (id, callback) => {
+  axios
+    .get(`https://fakestoreapi.com/products/${id}`)
+    .then((res) => {
+      console.log(res);
+      callback(true, res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      callback(false, error);
     });
 };
