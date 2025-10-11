@@ -8,7 +8,7 @@ const LoginPage = () => {
     if (token) {
       window.location.href = "/products";
     }
-  });
+  }, []);
 
   return (
     <AuthLayout title="LOGIN" type="login">

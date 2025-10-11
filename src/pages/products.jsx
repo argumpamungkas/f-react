@@ -3,7 +3,8 @@ import CardProduct from "../components/Fragments/CardProduct";
 import Button from "../components/Elements/Button";
 import Counter from "../components/Fragments/Counter";
 import { getProducts } from "../services/product.service";
-import { getUsername } from "../services/auth.service";
+// import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
 
 // const products = [
 //   {
@@ -36,17 +37,10 @@ const ProdcutsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
 
   // getUername
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUsername(getUsername(token));
-    } else {
-      window.location.href = "/login";
-    }
-  }, []);
+  const username = useLogin();
 
   //hooks useEffect unutk memanipulasi/seperti componentDidUpdate
   useEffect(() => {
